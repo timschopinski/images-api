@@ -4,7 +4,7 @@ from django.urls import path, include
 
 
 router = DefaultRouter()
-router.register(r'images', ImageViewSet)
+router.register('images', ImageViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),

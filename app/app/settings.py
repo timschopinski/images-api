@@ -32,19 +32,26 @@ ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+)
+THIRD_PARTY_APPS = (
     'corsheaders',
     'drf_yasg',
     'rest_framework',
     'rest_framework_swagger',
+    'storages'
+)
+PROJECT_APPS = (
     'images',
-]
+)
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -156,3 +163,11 @@ BUILTIN_TIERS = [
         'generate_expiring_links': True,
     },
 ]
+
+# S3 Storage Settings
+
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
