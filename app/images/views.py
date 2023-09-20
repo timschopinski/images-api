@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from .models import Image
+from .models import Image, UserProfile
 from .serializers import ImageSerializer, ExpiringLinkSerializer
 from rest_framework import permissions
 from .utils import create_thumbnails
@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 import boto3
-from app.settings import AWS_ACCESS_KEY_ID, AWS_S3_REGION_NAME,\
+from app.settings import AWS_ACCESS_KEY_ID, \
                          AWS_STORAGE_BUCKET_NAME, AWS_SECRET_ACCESS_KEY
 
 
@@ -22,16 +22,20 @@ class ImageViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer: ImageSerializer):
         user = self.request.user
-        user_tier = user.userprofile.tier
         image = serializer.save(user=user)
-        if user_tier:
-            create_thumbnails(image)
+        try:
+            user_tier = user.userprofile.tier
+            if user_tier:
+                create_thumbnails(image)
+        except UserProfile.DoesNotExist:
+            pass
 
 
 class GenerateExpiringLinkView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         serializer = ExpiringLinkSerializer(data=request.data)
 
         if not serializer.is_valid():

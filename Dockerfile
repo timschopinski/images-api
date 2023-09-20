@@ -6,9 +6,14 @@ ENV PYTHONUNBUFFERED 1
 RUN pip install --upgrade pip
 
 COPY ./requirements.txt /requirements.txt
+COPY ./requirements.dev.txt /requirements.dev.txt
 COPY ./scripts /scripts
+ARG DEV=false
 
 RUN pip3 install -r requirements.txt
+RUN if [ $DEV = "true" ]; \
+    then pip3 install -r requirements.dev.txt ; \
+    fi
 RUN mkdir /app
 WORKDIR /app
 COPY ./app /app
