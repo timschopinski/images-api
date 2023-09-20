@@ -7,9 +7,8 @@ class Command(BaseCommand):
     help = 'Ensure the creation of three built-in tiers'
 
     def handle(self, *args, **options):
-
-        for tier_data in BUILTIN_TIERS:
-            tier, created = Tier.objects.get_or_create(name=tier_data['name'])
+        for tier_name, tier_data in BUILTIN_TIERS.items():
+            tier, created = Tier.objects.get_or_create(name=tier_name)
             if created:
                 self.stdout.write(self.style.SUCCESS(f'Created tier: {tier.name}'))
             else:

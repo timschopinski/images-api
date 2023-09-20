@@ -11,5 +11,5 @@ services:
       - ./app:/app
     command: >
       sh -c "python manage.py migrate &&
-             python manage.py create_built_in_tiers &&d
+             python manage.py create_builtin_tiers &&d
              python manage.py runserver 0.0.0.0:8000"

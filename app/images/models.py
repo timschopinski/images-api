@@ -26,6 +26,18 @@ class Image(models.Model):
     image = models.ImageField(upload_to='images/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.image.name
+
+
+class Thumbnail(models.Model):
+    image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='thumbnails')
+    size = models.CharField(max_length=20)
+    thumbnail = models.ImageField(upload_to='thumbnails/')
+
+    def __str__(self):
+        return f'{self.thumbnail.name}-thumbnail-{self.size}'
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

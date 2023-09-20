@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
@@ -98,6 +99,13 @@ DATABASES = {
     }
 }
 
+# Database for tests
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'test_db.sqlite3'),
+    }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -141,33 +149,33 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-#  Builtin Tiers
+# S3 Storage Settings
 
-BUILTIN_TIERS = [
-    {
-        'name': 'Basic',
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+# images API settings
+
+VALID_FORMATS = ('PNG', 'JPG', 'JPEG')
+
+BUILTIN_TIERS = {
+    'Basic': {
         'thumbnail_sizes': ['200x200'],
         'include_original_link': False,
         'generate_expiring_links': False,
     },
-    {
-        'name': 'Premium',
+    'Premium': {
         'thumbnail_sizes': ['200x200', '400x400'],
         'include_original_link': True,
         'generate_expiring_links': False,
     },
-    {
-        'name': 'Enterprise',
+    'Enterprise': {
         'thumbnail_sizes': ['200x200', '400x400'],
         'include_original_link': True,
         'generate_expiring_links': True,
-    },
-]
-
-# S3 Storage Settings
-
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
-AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    }
+}

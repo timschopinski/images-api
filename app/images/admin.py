@@ -1,4 +1,4 @@
-from .models import Tier, Image
+from .models import Tier, Image, Thumbnail
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
@@ -15,6 +15,16 @@ class ImageAdmin(admin.ModelAdmin):
     list_display = ('user', 'image', 'uploaded_at')
     list_filter = ('user',)
     search_fields = ('user__username',)
+
+
+class ThumbnailAdmin(admin.ModelAdmin):
+    list_display = ('user', 'thumbnail', 'size')
+    list_filter = ('image__user',)
+    search_fields = ('image__user__username',)
+
+    @staticmethod
+    def user(obj: Thumbnail):
+        return obj.image.user.username
 
 
 class UserProfileInline(admin.StackedInline):
@@ -41,3 +51,4 @@ admin.site.register(User, CustomUserAdmin)
 
 admin.site.register(Tier, TierAdmin)
 admin.site.register(Image, ImageAdmin)
+admin.site.register(Thumbnail, ThumbnailAdmin)
