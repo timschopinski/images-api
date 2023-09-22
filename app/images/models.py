@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Tier(models.Model):
@@ -48,3 +50,13 @@ class UserProfile(models.Model):
 
     class Meta:
         verbose_name_plural = "User Profiles"
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance: User, created: bool, **kwargs):
+    if created:
+        basic_tier, _ = Tier.objects.get_or_create(name='Basic')
+        try:
+            instance.userprofile.tier
+        except models.ObjectDoesNotExist:
+            UserProfile.objects.get_or_create(user=instance, tier=basic_tier)

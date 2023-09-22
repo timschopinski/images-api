@@ -23,12 +23,20 @@ class ImageViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer: ImageSerializer):
         user = self.request.user
         image = serializer.save(user=user)
-        try:
-            user_tier = user.userprofile.tier
-            if user_tier:
-                create_thumbnails(image)
-        except UserProfile.DoesNotExist:
-            pass
+        user_tier = user.userprofile.tier
+        create_thumbnails(image)
+
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        user_tier = request.user.userprofile.tier
+        if user_tier and not user_tier.include_original_link:
+            # Exclude the original image link if it's not allowed by the tier
+            for item in serializer.data:
+                item.pop('image', None)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class GenerateExpiringLinkView(APIView):
