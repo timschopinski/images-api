@@ -27,7 +27,7 @@ ENV = os.getenv('ENVIRONMENT', 'DEV')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = ENV == 'DEV'
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '*']
 
@@ -179,4 +179,13 @@ BUILTIN_TIERS = {
         'include_original_link': True,
         'generate_expiring_links': True,
     }
+}
+
+# SWAGGER
+SWAGGER_SETTINGS = {
+    'SHOW_REQUEST_HEADERS': True,
+    'JSON_EDITOR': True,
+    'LOGIN_URL': 'admin:login',
+    'LOGOUT_URL': 'admin:logout',
+    'OPERATIONS_SORTER': 'alpha',
 }
