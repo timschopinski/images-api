@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from .models import Image, UserProfile
+from .models import Image
 from .serializers import ImageSerializer, ExpiringLinkSerializer
 from rest_framework import permissions
 from .utils import create_thumbnails
@@ -23,16 +23,13 @@ class ImageViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer: ImageSerializer):
         user = self.request.user
         image = serializer.save(user=user)
-        user_tier = user.userprofile.tier
         create_thumbnails(image)
-
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
         user_tier = request.user.userprofile.tier
         if user_tier and not user_tier.include_original_link:
-            # Exclude the original image link if it's not allowed by the tier
             for item in serializer.data:
                 item.pop('image', None)
 
