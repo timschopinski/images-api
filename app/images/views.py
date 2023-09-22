@@ -18,7 +18,7 @@ class ImageViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Image.objects.filter(user=self.request.user)
+        return Image.objects.filter(user=self.request.user.id)
 
     def perform_create(self, serializer: ImageSerializer):
         user = self.request.user

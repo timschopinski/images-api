@@ -43,3 +43,22 @@ jobs:
           docker build -t images-api .
           docker tag images-api:latest timosch99/images-api:latest
           docker push timosch99/images-api:latest
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  # Replace with your desired AWS region
+
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | docker login --username AWS --password-stdin ${{ AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
+
+      - name: Tag Docker Image for ECR
+        run: |
+          docker tag timosch99/images-api:latest ${{ AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/images-api:latest
+
+      - name: Push Docker Image to ECR
+        run: |
+          docker push ${{ AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/images-api:latest

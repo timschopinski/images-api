@@ -4,6 +4,7 @@ from django.urls import reverse
 from images.tests.factories import UserFactory
 from PIL import Image as IMG
 
+
 class ImageTestCase(TestCase):
     def setUp(self):
         self.user = UserFactory(username='testuser', password='testpassword')

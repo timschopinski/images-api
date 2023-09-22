@@ -18,12 +18,12 @@ RUN mkdir /app
 WORKDIR /app
 COPY ./app /app
 
-RUN mkdir -p /vol/web/media
-RUN mkdir -p /vol/web/static
+RUN mkdir -p /app/staticfiles
 RUN adduser user
-RUN chown -R user:user /vol/
-RUN chmod -R 755 /vol/web && chmod -R +x /scripts
+RUN chown -R user:user /app/staticfiles
+RUN chmod -R +x /scripts
 
+EXPOSE 8000
 ENV PATH="/scripts:/py/bin:$PATH"
 
 USER user

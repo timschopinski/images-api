@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 from images.tests.factories import UserFactory
 
+
 class AdminViewTestCase(TestCase):
 
     def setUp(self):
