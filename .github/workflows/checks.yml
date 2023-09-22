@@ -64,7 +64,7 @@ jobs:
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/images-api:latest
 
   deployment:
-    name: Deployment
+    name: deployment
     needs: push
     runs-on: ubuntu-latest
     steps:
