@@ -57,9 +57,9 @@ You can test the API using Swagger, a user-friendly interface for interacting wi
 3. You can use Swagger to explore and interact with the API endpoints, making it easy to test and understand the available features.
 
 
-# Admin Panel and Live Preview
+## Admin Panel and Live Preview
 
-## Admin Panel
+### Admin Panel
 
 You can access the admin panel to manage users and other aspects of your application. Use the following credentials to log in:
 
@@ -85,10 +85,16 @@ Three users with different Tiers have already been created for testing purposes.
    - **Password**: password123#
    - **Tier**: Enterprise
 
-## Live Preview
+### Live Preview
 
 You can explore a live preview of the application hosted on AWS by visiting the following link:
 
 [Live Preview](http://imagesapiloadbalancer-1990742228.us-east-1.elb.amazonaws.com/)
 
 Feel free to log in as one of the existing users or use the admin panel to manage your application.
+
+### API Documentation
+
+For detailed API documentation and examples, please refer to our [Postman workspace](https://www.postman.com/blue-eclipse-637617/workspace/images-api/).
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/blue-eclipse-637617/workspace/images-api/)
