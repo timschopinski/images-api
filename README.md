@@ -89,7 +89,7 @@ Three users with different Tiers have already been created for testing purposes.
 
 You can explore a live preview of the application hosted on AWS by visiting the following link:
 
-[Live Preview](http://imagesapiloadbalancer-1990742228.us-east-1.elb.amazonaws.com/)
+[Live Preview](http://imagesapiloadbalancer-1990742228.us-east-1.elb.amazonaws.com/api/)
 
 Feel free to log in as one of the existing users or use the admin panel to manage your application.
 
