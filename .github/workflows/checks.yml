@@ -25,9 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Test
-        env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        run: docker-compose run --rm app sh -c "python3 manage.py test images.tests"
+        run: docker-compose run --rm -e SECRET_KEY=${{ secrets.SECRET_KEY }} app sh -c "python3 manage.py test images.tests"
 
   push:
     needs: test
